@@ -1,0 +1,17 @@
+# Mount host path into minikube to act similar to NFS
+# mkdir -m 777 volume
+# minikube start --nodes=3 --mount=true --mount-string="${PWD}/volume:/share"
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv0001
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "standard"
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: /share/one
+
