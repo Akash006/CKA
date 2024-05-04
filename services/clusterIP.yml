@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: backend-deployment
+    labels:
+        app: mybackend
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: backend
+    template:
+        metadata:
+            name: web-pod
+            labels:
+                app: backend
+        spec:
+            containers:
+            - name: mynginx
+              image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  type: ClusterIP
+  selector:
+      app: backend
+  ports:
+    - targetPort: 80
+      port: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: frontend-deployment
+    labels:
+        app: myfrontend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: frontend
+    template:
+        metadata:
+            name: web-pod-frontend
+            labels:
+                app: frontend
+        spec:
+            containers:
+            - name: linux
+              image: centos:7
+              command: ["sleep","3600"]
+
